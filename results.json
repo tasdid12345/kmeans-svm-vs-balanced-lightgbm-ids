@@ -1,0 +1,31 @@
+{
+  "question": "Can a class-balanced LightGBM with a CV-tuned threshold beat a K-means-filtered SVM hybrid at detecting intrusions on NSL-KDD while producing fewer false alarms?",
+  "method": "Train on a fixed 20,000-row subsample of KDDTrain+, test once on KDDTest+. Both models use one-hot + min-max features, a 5-fold stratified CV threshold maximising F1 on training data, and seeds 42-44.",
+  "dataset": {
+    "name": "NSL-KDD (KDDTrain+ / KDDTest+)",
+    "source_url": "https://raw.githubusercontent.com/defcom17/NSL_KDD/master/",
+    "n_rows": 148517,
+    "n_train": 20000,
+    "n_test": 22544,
+    "same_as_paper": true,
+    "baseline_is_papers_method": false
+  },
+  "metric_name": "malicious-class F1 on KDDTest+",
+  "higher_is_better": true,
+  "baseline": "K-means (k=20) label-purity filter followed by an RBF SVM (paper-style hybrid).",
+  "improved": "Class-balanced LightGBM (class_weight='balanced') on the same features, same threshold protocol.",
+  "metrics": {
+    "baseline_f1": 0.690321,
+    "baseline_score_std": 0.003083,
+    "baseline_detection_rate": 0.537676,
+    "baseline_false_alarm_rate": 0.026499,
+    "improved_f1": 0.756651,
+    "improved_score_std": 0.000687,
+    "improved_detection_rate": 0.621964,
+    "improved_false_alarm_rate": 0.029108,
+    "baseline_score": 0.690321,
+    "improved_score": 0.756651,
+    "improvement": 0.066331
+  },
+  "notes": "KDDTest+ is used as the test set as specified, so the split is the predefined NSL-KDD split (about 15% test), not a 20-30% resplit. Training uses a 20,000-row subsample of KDDTrain+. The threshold is chosen on out-of-fold training scores only. Std is the population std over 3 seeds. The SVM is the main runtime cost. The test set has known distribution shift (novel attacks), and results are not a claim about the original 2015 paper's numbers, which are not stated."
+}
