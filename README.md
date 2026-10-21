@@ -22,6 +22,28 @@ python analysis.py
 
 Results: written to results.json (and figures/baseline_vs_improved.png).
 
+## Results (latest run)
+
+In my experiment on NSL-KDD's KDDTest+, a standard K-means-filtered RBF SVM hybrid reached malicious-class F1 0.690 while my class-balanced LightGBM reached 0.757, though its false-alarm rate was slightly higher (0.029 vs 0.026).
+
+| Metric | Value |
+|---|---|
+| baseline_f1 | 0.6903 |
+| baseline_score_std | 0.003083 |
+| baseline_detection_rate | 0.5377 |
+| baseline_false_alarm_rate | 0.0265 |
+| improved_f1 | 0.7567 |
+| improved_score_std | 0.000687 |
+| improved_detection_rate | 0.622 |
+| improved_false_alarm_rate | 0.02911 |
+| baseline_score | 0.6903 |
+| improved_score | 0.7567 |
+| improvement | 0.06633 |
+
+Run on 2026-10-21. Full output: [results.json](results.json) · [run.log](run.log)
+
+Notes: KDDTest+ is used as the test set as specified, so the split is the predefined NSL-KDD split (about 15% test), not a 20-30% resplit. Training uses a 20,000-row subsample of KDDTrain+. The threshold is chosen on out-of-fold training scores only. Std is the population std over 3 seeds. The SVM is the main runtime cost. The test set has known distribution shift (novel attacks), and results are not a claim about the original 2015 paper's numbers, which are not stated.
+
 ## Reference
 
 This project is motivated by the following paper:
